@@ -1,0 +1,9 @@
+export const EVENTS_REPOSITORY = 'EVENTS_REPOSITORY';
+export const USERS_REPOSITORY = 'USERS_REPOSITORY';
+
+export const SEQUALIZE = 'SEQUELIZE'
+
+export const EVENT_TYPES = ['MEETING'];
+
+export const USERS_SEED_COUNT = 100;
+export const EVENTS_SEED_PER_USER = 10;

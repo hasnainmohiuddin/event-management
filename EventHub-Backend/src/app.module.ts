@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+import { EventsModule } from './events/events.module';
 import { databaseProviders } from './database/database.providers';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [],
+  imports: [EventsModule, AuthModule],
   providers: [...databaseProviders]
 })
 
