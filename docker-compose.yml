@@ -1,0 +1,50 @@
+version: "3"
+services:
+
+  mysql:
+    image: "mysql:latest"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=event_manager
+      - MYSQL_ALLOW_EMPTY_PASSWORD=root
+      - MYSQL_PASSWORD=mysql
+
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: "./nginx"
+    ports:
+      - "3080:80"
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: "./EventHub-Backend"
+    volumes:
+      - /EventHub-Backend/node_modules
+      - ./EventHub-Backend:/app
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_DIALECT=mysql
+      - DB_NAME=event_manager
+      - DB_PASSWORD=mysql
+      - PORT=3306
+      - JWT_SECRET=secret
+      - ACCESS_TOKEN_EXPIRES_IN=1800
+
+  client:
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile
+      context: "./EventHub-Frontend"
+    volumes:
+      - /EventHub-Frontend/node_modules
+      - ./EventHub-Frontend:/app
